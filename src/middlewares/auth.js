@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
-const User = require("../api/user/user.model");
+const User = require("../models/user.model");
 
 const authentication = async (req, res, next) => {
   try {
     // Check if the authorization header exists
     const authHeader = req.headers["authorization"];
+    console.log("authHeader,",authHeader)
     if (!authHeader) {
       return res
         .status(401)
@@ -14,7 +15,7 @@ const authentication = async (req, res, next) => {
     // Split the token and check its format
     const [scheme, token] = authHeader.split(" ");
     if (!token || scheme !== "Bearer") {
-      return res.status(403).json({ message: "Invalid token", status: false });
+      return res.status(401).json({ message: "Invalid token", status: false });
     }
 
     // Verify the token
@@ -24,7 +25,7 @@ const authentication = async (req, res, next) => {
       isActive: true,
     });
     if (!existUser) {
-      return res.status(403).json({ message: "Invalid token", status: false });
+      return res.status(401).json({ message: "Invalid token", status: false });
     }
     req.user = existUser;
 
@@ -34,11 +35,11 @@ const authentication = async (req, res, next) => {
     console.error("Error during authentication:", error);
 
     if (error.name === "JsonWebTokenError") {
-      return res.status(403).json({ message: "Invalid token", status: false });
+      return res.status(401).json({ message: "Invalid token", status: false });
     }
 
     if (error.name === "TokenExpiredError") {
-      return res.status(403).json({ message: "Token expired", status: false });
+      return res.status(401).json({ message: "Token expired", status: false });
     }
 
     // Handle other errors

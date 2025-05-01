@@ -21,9 +21,11 @@ const createSession = async (data) => {
 };
 
 const updateSession = async (sessionId, updateData) => {
+  console.log("sessionId", sessionId, "updateData", updateData);
+
   try {
     const updatedSession = await Session.findOneAndUpdate(
-      { _id: sessionId }, // search by sessionId (or other field as necessary)
+      { _id: sessionId },
       updateData,
       { new: true }
     );

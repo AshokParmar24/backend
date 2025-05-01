@@ -66,12 +66,11 @@ const singInUser = async (req, res) => {
       isActive: true,
     });
 
-    console.log("existingSession",existingSession)
-
+ 
     if (existingSession) {
       await updateSession(
         { _id: existingSession._id },
-        { $set: { is_active: false } }
+        { $set: { isActive: false } }
       );
     }
 

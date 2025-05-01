@@ -27,7 +27,7 @@ const createNewUser = async (req, res) => {
 };
 
 const singInUser = async (req, res) => {
-   try {
+  try {
     const existUser = await findByUser({
       email: req?.body?.email,
       isActive: true,
@@ -66,7 +66,6 @@ const singInUser = async (req, res) => {
       isActive: true,
     });
 
- 
     if (existingSession) {
       await updateSession(
         { _id: existingSession._id },

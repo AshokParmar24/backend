@@ -23,7 +23,7 @@ const signupValidation = [
     .custom(async (value) => {
       const existingUser = await User.findOne({ email: value });
       if (existingUser) {
-        throw new Error("Email already in use");
+        throw new Error("Email already in exist");
       }
     }),
 
@@ -47,6 +47,28 @@ const signupValidation = [
     .withMessage(
       "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character (@$!%*?&)"
     ),
+
+    body("confirmPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is required")
+    .bail()
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long")
+    .bail()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/
+    )
+    .withMessage(
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, one special character (@$!%*?&)"
+    )
+    .bail()
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
+      }
+      return true;
+    }),
 ];
 
 module.exports = signupValidation;

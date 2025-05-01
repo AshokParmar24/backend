@@ -10,4 +10,13 @@ const createUser = async (data) => {
   }
 };
 
-module.exports = { createUser };
+const findByUser = async (query) => {
+  try {
+    const user = await User.findOne(query);
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { createUser, findByUser };

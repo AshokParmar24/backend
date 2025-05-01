@@ -1,4 +1,5 @@
 const Session = require("../models/session.model");
+const { updateSession } = require("../service/session.service");
 
 const getSessionList = async (req, res) => {
   try {
@@ -18,5 +19,27 @@ const getSessionList = async (req, res) => {
   }
 };
 
+const updateSessionStatus = async (req, res) => {
+  const { sessionId } = req.params;
+  const { isActive } = req.body;
 
-module.exports={getSessionList}
+  try {
+    const session = await updateSession(
+      { _id: sessionId },
+      { $set: { isActive: isActive } }
+    );
+
+    if (!session) {
+      return res
+        .status(404)
+        .json({ message: "Session not found", status: false });
+    }
+    res.status(200).json({ message: "Session status updated", status: true });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating session status", status: false });
+  }
+};
+
+module.exports = { getSessionList, updateSessionStatus };

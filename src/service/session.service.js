@@ -20,12 +20,11 @@ const createSession = async (data) => {
   }
 };
 
-const updateSession = async (sessionId, updateData) => {
-  console.log("sessionId", sessionId, "updateData", updateData);
-
+const updateSession = async (filter, updateData) => {
+ 
   try {
     const updatedSession = await Session.findOneAndUpdate(
-      { _id: sessionId },
+      filter,
       updateData,
       { new: true }
     );

@@ -37,12 +37,10 @@ const updateSessionStatus = async (req, res) => {
     }
     res.status(200).json({ message: "Session status updated", status: true });
   } catch (err) {
-    console.log("errorerrorerrorerrorerror", err);
-    res.status(500).json({
+     res.status(500).json({
       message: 'Something went wrong',
       status: false,
-      error: err,
-    });
+     });
   }
 };
 

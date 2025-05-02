@@ -28,6 +28,7 @@ const updateSessionStatus = async (req, res) => {
       { _id: sessionId },
       { $set: { isActive: isActive } }
     );
+    console.log("sessionsessionsession", session);
 
     if (!session) {
       return res
@@ -36,9 +37,12 @@ const updateSessionStatus = async (req, res) => {
     }
     res.status(200).json({ message: "Session status updated", status: true });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error updating session status", status: false });
+    console.log("errorerrorerrorerrorerror", err);
+    res.status(500).json({
+      message: 'Something went wrong',
+      status: false,
+      error: err,
+    });
   }
 };
 
